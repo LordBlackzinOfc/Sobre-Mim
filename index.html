@@ -19,7 +19,6 @@
             --text-muted: #a4b0be;
             --border-radius: 10px;
             --gap: 15px;
-            --overlay-opacity: 0.6;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,6 +29,9 @@
             font-family: 'JetBrains Mono', monospace;
             height: 100vh;
             overflow: hidden;
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), var(--bg-image);
+            background-size: cover;
+            background-position: center;
             padding: var(--gap);
             display: flex;
             flex-direction: column;
@@ -38,45 +40,27 @@
             position: relative;
         }
 
-        /* Video Background */
+        /* Vídeo de fundo */
         #video-background {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            z-index: -2;
             display: none;
         }
 
-        #video-background.active {
-            display: block;
-        }
-
-        /* Image Background */
-        #image-background {
+        #video-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            background-size: cover;
-            background-position: center;
-            background-image: var(--bg-image);
-        }
-
-        /* Overlay */
-        #background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6));
             z-index: -1;
-            background: linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0, var(--overlay-opacity)));
-            pointer-events: none;
+            display: none;
         }
 
         /* Top Bar */
@@ -159,7 +143,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: var(--border-radius);
             padding: 30px;
-            max-width: 700px;
+            max-width: 600px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
@@ -226,42 +210,6 @@
             background: transparent;
         }
 
-        /* Tabs para Wallpaper */
-        .wallpaper-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .wallpaper-tab {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: 0.3s;
-            border-bottom: 3px solid transparent;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .wallpaper-tab.active {
-            color: var(--accent-primary);
-            border-bottom-color: var(--accent-primary);
-        }
-
-        .wallpaper-tab:hover {
-            color: var(--text-main);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
         .wallpaper-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -310,65 +258,6 @@
             display: flex;
         }
 
-        /* Video Options */
-        .video-option {
-            position: relative;
-            aspect-ratio: 16/9;
-            border-radius: 5px;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: 0.3s;
-            overflow: hidden;
-            background: #000;
-        }
-
-        .video-option img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-option .play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: rgba(255,255,255,0.8);
-            pointer-events: none;
-        }
-
-        .video-option:hover {
-            border-color: var(--accent-primary);
-            transform: scale(1.05);
-        }
-
-        .video-option.active {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 20px rgba(236, 17, 36, 0.5);
-        }
-
-        .video-option::after {
-            content: '✓';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: var(--accent-primary);
-            color: white;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            z-index: 10;
-        }
-
-        .video-option.active::after {
-            display: flex;
-        }
-
         .custom-input-group {
             display: flex;
             gap: 10px;
@@ -378,7 +267,7 @@
         .custom-input-group input {
             flex: 1;
             padding: 10px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 5px;
             color: var(--text-main);
@@ -397,136 +286,197 @@
         }
 
         .custom-input-group button:hover {
-            background: #c00f1f;
-        }
-
-        /* Slider para opacidade */
-        .slider-group {
-            margin-top: 15px;
-        }
-
-        .slider-group label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .slider-group input[type="range"] {
-            width: 100%;
-            height: 6px;
-            border-radius: 5px;
-            background: rgba(255,255,255,0.1);
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            cursor: pointer;
-        }
-
-        .slider-group input[type="range"]::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            cursor: pointer;
-            border: none;
-        }
-
-        .slider-value {
-            display: inline-block;
-            margin-left: 10px;
-            color: var(--accent-primary);
-            font-weight: bold;
+            background: #d01020;
         }
 
         .reset-btn {
             width: 100%;
             padding: 12px;
-            background: rgba(255,0,0,0.2);
-            border: 1px solid rgba(255,0,0,0.4);
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 5px;
-            color: #ff4757;
+            color: var(--text-main);
             cursor: pointer;
             transition: 0.3s;
             font-family: 'JetBrains Mono', monospace;
         }
+
         .reset-btn:hover {
-            background: rgba(255,0,0,0.3);
+            background: rgba(255,0,0,0.2);
+            border-color: #ff0000;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Tabs de Wallpaper */
+        .wallpaper-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .wallpaper-tab {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .wallpaper-tab.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .wallpaper-tab:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+
+        .wallpaper-content {
+            display: none;
+        }
+
+        .wallpaper-content.active {
+            display: block;
         }
 
         /* Main Content */
         main {
             flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
+            gap: var(--gap);
             position: relative;
-            z-index: 10;
         }
 
-        .view {
+        #home-view, #dashboard-view {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s, transform 0.5s;
         }
 
-        .view.hidden {
+        #home-view {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
+
+        #home-view.hidden {
             opacity: 0;
-            transform: translateY(30px);
             pointer-events: none;
-            position: absolute;
+            transform: translateX(-50px);
         }
 
         #dashboard-view {
             opacity: 0;
-            transform: translateY(30px);
             pointer-events: none;
-            position: absolute;
+            transform: translateX(50px);
         }
 
         #dashboard-view.visible {
             opacity: 1;
-            transform: translateY(0);
             pointer-events: all;
-            position: relative;
+            transform: translateX(0);
         }
 
-        .central-icon {
-            font-size: 10rem;
+        .center-card {
+            background: var(--window-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--border-radius);
+            padding: 50px;
+            text-align: center;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-primary);
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(236, 17, 36, 0.4);
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-primary), #ff4757);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .cta-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(236, 17, 36, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cta-btn:hover {
+            background: #d01020;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(236, 17, 36, 0.5);
+        }
+
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
             color: var(--accent-primary);
-            text-shadow: 0 0 60px var(--accent-primary);
-            animation: pulse 3s infinite;
+            transform: scale(1.2);
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .dashboard {
+        /* Dashboard Layout */
+        section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
             gap: var(--gap);
-            width: 95%;
-            max-width: 1200px;
-            padding: 20px;
+            width: 100%;
+            height: 100%;
         }
 
         .window {
@@ -535,104 +485,125 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
         }
 
         .win-header {
-            background: rgba(0,0,0,0.3);
+            background: var(--bar-bg);
             padding: 10px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
             font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .win-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
             color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .win-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .win-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .win-content::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(236, 17, 36, 0.2);
+            border: 1px solid var(--accent-primary);
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+        }
+
+        .profile-stat {
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .win-content {
-            padding: 20px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .profile-card {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--accent-primary);
-            box-shadow: 0 0 30px rgba(236, 17, 36, 0.4);
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-        }
-
-        .profile-info h2 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+        .profile-stat i {
             color: var(--accent-primary);
+            width: 20px;
         }
 
-        .profile-info p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+        /* Terminal Style */
+        .terminal-line {
+            margin-bottom: 8px;
         }
 
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .social-links a {
-            color: var(--text-muted);
-            font-size: 1.3rem;
-            transition: 0.3s;
-        }
-
-        .social-links a:hover {
+        .terminal-line::before {
+            content: '> ';
             color: var(--accent-primary);
-            text-shadow: 0 0 10px var(--accent-primary);
+            font-weight: bold;
         }
 
         /* Aviso de DevTools */
-        #devtools-warning {
+        .devtools-warning {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(236, 17, 36, 0.95);
-            color: white;
-            padding: 30px;
+            background: rgba(0,0,0,0.95);
+            border: 2px solid var(--accent-primary);
+            padding: 40px;
             border-radius: 10px;
-            z-index: 9999;
-            display: none;
+            z-index: 10000;
             text-align: center;
-            box-shadow: 0 0 50px rgba(236, 17, 36, 0.8);
+            box-shadow: 0 0 50px rgba(236, 17, 36, 0.7);
+            display: none;
         }
 
-        #devtools-warning.active {
+        .devtools-warning.active {
             display: block;
         }
 
-        #devtools-warning h2 {
-            margin-bottom: 10px;
-            font-size: 1.5rem;
+        .devtools-warning h2 {
+            color: var(--accent-primary);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .devtools-warning p {
+            color: var(--text-main);
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .dashboard {
+            section {
                 grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 1fr);
             }
+
+            .center-card {
+                padding: 30px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
             .wallpaper-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -640,32 +611,26 @@
     </style>
 </head>
 <body>
-    <!-- Video Background -->
-    <video id="video-background" autoplay loop muted playsinline></video>
-    
-    <!-- Image Background -->
-    <div id="image-background"></div>
-    
-    <!-- Overlay -->
-    <div id="background-overlay"></div>
+    <!-- Vídeo de fundo -->
+    <video id="video-background" autoplay muted loop playsinline></video>
+    <div id="video-overlay"></div>
 
-    <!-- Aviso de DevTools -->
-    <div id="devtools-warning">
-        <h2><i class="fas fa-exclamation-triangle"></i> Acesso Negado</h2>
-        <p>Ferramentas de desenvolvedor detectadas.<br>Por favor, feche-as para continuar.</p>
+    <!-- Aviso DevTools -->
+    <div class="devtools-warning" id="devtools-warning">
+        <h2><i class="fas fa-exclamation-triangle"></i> ACESSO NEGADO</h2>
+        <p>Feche o DevTools para continuar navegando.</p>
     </div>
 
     <!-- Modal de Personalização -->
-    <div id="settings-modal" class="settings-modal">
+    <div class="settings-modal" id="settings-modal">
         <div class="settings-content">
             <div class="settings-header">
                 <h2><i class="fas fa-palette"></i> Personalização</h2>
                 <button class="close-btn" onclick="closeSettings()">×</button>
             </div>
 
-            <!-- Seção de Cores -->
             <div class="settings-section">
-                <h3><i class="fas fa-fill-drip"></i> Esquema de Cores</h3>
+                <h3><i class="fas fa-paint-brush"></i> Cores do Tema</h3>
                 <div class="color-picker-group">
                     <div class="color-option">
                         <label>Cor Primária</label>
@@ -686,87 +651,59 @@
                 </div>
             </div>
 
-            <!-- Seção de Wallpaper -->
             <div class="settings-section">
                 <h3><i class="fas fa-image"></i> Papel de Parede</h3>
                 
                 <!-- Tabs -->
                 <div class="wallpaper-tabs">
-                    <button class="wallpaper-tab active" onclick="switchTab('images')">
-                        <i class="fas fa-image"></i> Imagens
-                    </button>
-                    <button class="wallpaper-tab" onclick="switchTab('videos')">
-                        <i class="fas fa-video"></i> Vídeos
-                    </button>
+                    <div class="wallpaper-tab active" onclick="switchWallpaperTab('image')">
+                        <i class="fas fa-image"></i> Imagem
+                    </div>
+                    <div class="wallpaper-tab" onclick="switchWallpaperTab('video')">
+                        <i class="fas fa-video"></i> Vídeo
+                    </div>
                 </div>
 
-                <!-- Tab: Imagens -->
-                <div id="tab-images" class="tab-content active">
+                <!-- Conteúdo de Imagem -->
+                <div class="wallpaper-content active" id="wallpaper-image">
                     <div class="wallpaper-grid">
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920')"></div>
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920')"></div>
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920')"></div>
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920')"></div>
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920')"></div>
-                        <div class="wallpaper-option" style="background-image: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800');" onclick="selectWallpaper(this)" data-bg="url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920')"></div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
+                        <div class="wallpaper-option" data-bg="url('https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=1920')" onclick="selectWallpaper(this)">
+                        </div>
                     </div>
+
                     <div class="custom-input-group">
                         <input type="text" id="custom-wallpaper" placeholder="Cole a URL da imagem aqui...">
                         <button onclick="applyCustomWallpaper()"><i class="fas fa-check"></i> Aplicar</button>
                     </div>
                 </div>
 
-                <!-- Tab: Vídeos -->
-                <div id="tab-videos" class="tab-content">
-                    <div class="wallpaper-grid">
-                        <div class="video-option" onclick="selectVideo(this, 'dQw4w9WgXcQ')">
-                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Video 1">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                        <div class="video-option" onclick="selectVideo(this, 'jfKfPfyJRdk')">
-                            <img src="https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg" alt="Video 2">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                        <div class="video-option" onclick="selectVideo(this, '9bZkp7q19f0')">
-                            <img src="https://img.youtube.com/vi/9bZkp7q19f0/maxresdefault.jpg" alt="Video 3">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                        <div class="video-option" onclick="selectVideo(this, 'L_jWHffIx5E')">
-                            <img src="https://img.youtube.com/vi/L_jWHffIx5E/maxresdefault.jpg" alt="Video 4">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                        <div class="video-option" onclick="selectVideo(this, 'ZZ5LpwO-An4')">
-                            <img src="https://img.youtube.com/vi/ZZ5LpwO-An4/maxresdefault.jpg" alt="Video 5">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                        <div class="video-option" onclick="selectVideo(this, 'KpXsfimrkFo')">
-                            <img src="https://img.youtube.com/vi/KpXsfimrkFo/maxresdefault.jpg" alt="Video 6">
-                            <i class="fas fa-play-circle play-icon"></i>
-                        </div>
-                    </div>
+                <!-- Conteúdo de Vídeo -->
+                <div class="wallpaper-content" id="wallpaper-video">
                     <div class="custom-input-group">
-                        <input type="text" id="custom-video" placeholder="Cole o ID do YouTube ou URL do vídeo MP4...">
+                        <input type="text" id="custom-video" placeholder="Cole a URL do vídeo (.mp4, .webm)...">
                         <button onclick="applyCustomVideo()"><i class="fas fa-check"></i> Aplicar</button>
                     </div>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">
-                        <i class="fas fa-info-circle"></i> Para YouTube, use o ID do vídeo (ex: dQw4w9WgXcQ). Para vídeos diretos, use a URL completa do MP4.
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">
+                        <i class="fas fa-info-circle"></i> Use vídeos em formato MP4 ou WebM hospedados online
                     </p>
-                </div>
-
-                <!-- Slider de Opacidade do Overlay -->
-                <div class="slider-group">
-                    <label>
-                        <i class="fas fa-adjust"></i> Opacidade do Overlay: 
-                        <span class="slider-value" id="overlay-value">60%</span>
-                    </label>
-                    <input type="range" id="overlay-slider" min="0" max="100" value="60" oninput="updateOverlay(this.value)">
                 </div>
             </div>
 
-            <!-- Botão de Reset -->
-            <button class="reset-btn" onclick="resetSettings()">
-                <i class="fas fa-undo"></i> Restaurar Padrão
-            </button>
+            <div class="settings-section">
+                <button class="reset-btn" onclick="resetSettings()">
+                    <i class="fas fa-undo"></i> Restaurar Padrão
+                </button>
+            </div>
         </div>
     </div>
 
@@ -776,12 +713,12 @@
             <i class="fas fa-home ws-icon active" id="ws-home" onclick="goHome()"></i>
             <i class="fas fa-user ws-icon" id="ws-info" onclick="goInfo()"></i>
         </div>
-
-        <div class="bar-module">
-            <i class="fas fa-clock"></i>
-            <span class="clock" id="clock-display">00:00</span>
+        
+        <div class="bar-module clock">
+            <i class="far fa-clock"></i>
+            <span id="clock-display">00:00</span>
         </div>
-
+        
         <button class="settings-btn" onclick="openSettings()">
             <i class="fas fa-cog"></i>
         </button>
@@ -790,34 +727,79 @@
     <!-- Main Content -->
     <main>
         <!-- Home View -->
-        <div id="home-view" class="view">
-            <i class="fas fa-terminal central-icon"></i>
+        <div id="home-view">
+            <div class="center-card">
+                <div class="avatar-container">
+                    <img src="https://i.imgur.com/vKhChXP.jpeg" alt="Avatar">
+                </div>
+                <h1 class="title">BLACK</h1>
+                <p class="subtitle">Programador Python • HTML • JavaScript</p>
+                <button class="cta-btn" onclick="goInfo()">
+                    <i class="fas fa-code"></i> Ver Portfólio
+                </button>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
         </div>
 
         <!-- Dashboard View -->
-        <section id="dashboard-view" class="dashboard">
-            <div class="window win-about">
+        <div id="dashboard-view">
+            <section>
+
+            <div class="window win-skills">
                 <div class="win-header">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Perfil / Sobre Mim</span>
+                    <span>Skills / Tecnologias</span>
                 </div>
                 <div class="win-content">
-                    <div class="profile-card">
-                        <div class="profile-avatar">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <div class="profile-info">
-                            <h2>Black</h2>
-                            <p>Desenvolvedor Python • Discord Bots • DBC Scripts</p>
-                            <div class="social-links">
-                                <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
-                                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
-                                <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </div>
+                    <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
+                    <span class="skill-tag"><i class="fab fa-html5"></i> HTML</span>
+                    <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS</span>
+                    <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="skill-tag"><i class="fab fa-discord"></i> Discord.py</span>
+                    <span class="skill-tag"><i class="fas fa-database"></i> SQL</span>
+                    <span class="skill-tag"><i class="fab fa-git-alt"></i> Git</span>
+                    <span class="skill-tag"><i class="fas fa-server"></i> APIs</span>
+                </div>
+            </div>
+
+            <div class="window win-status">
+                <div class="win-header">
+                    <span>Status / Informações</span>
+                </div>
+                <div class="win-content">
+                    <div class="profile-stat">
+                        <i class="fas fa-code"></i>
+                        <span>Programador Fullstack</span>
                     </div>
-                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <p style="line-height: 1.8;">
+                    <div class="profile-stat">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Brasil</span>
+                    </div>
+                    <div class="profile-stat">
+                        <i class="fas fa-circle" style="color: #2ecc71;"></i>
+                        <span>Disponível para projetos</span>
+                    </div>
+                    <div class="profile-stat">
+                        <i class="fas fa-trophy"></i>
+                        <span>Especialista em DBC Scripts</span>
+                    </div>
+                    <div class="profile-stat">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Focado em automação e bots</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="window win-about">
+                <div class="win-header">
+                    <span>Sobre / Bio</span>
+                </div>
+                <div class="win-content">
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-left: 3px solid var(--accent-primary); border-radius: 5px;">
+                        <p>
                             Meu Nome e Luiz, mas uso <strong>Black</strong>. Sou Programador focado em Python, HTML e JavaScript.
                             <br><br>
                             Tenho experiência na criação de Bots de Discord e Script para Dragon Block C.
@@ -829,7 +811,6 @@
 
             <div class="window win-projects">
                 <div class="win-header">
-                    <i class="fas fa-folder-open"></i>
                     <span>Repositório / Projetos</span>
                 </div>
                 <div class="win-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -845,6 +826,7 @@
             </div>
 
         </section>
+        </div>
     </main>
 
     <script>
@@ -852,6 +834,7 @@
         // PROTEÇÃO CONTRA DEVTOOLS
         // ===========================================
         
+        // Detectar DevTools por tamanho da janela
         const devtoolsWarning = document.getElementById('devtools-warning');
         let devtoolsOpen = false;
 
@@ -873,6 +856,7 @@
             }
         }
 
+        // Detectar debugger
         setInterval(() => {
             detectDevTools();
             const start = performance.now();
@@ -883,12 +867,15 @@
             }
         }, 1000);
 
+        // Desabilitar clique direito
         document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             return false;
         });
 
+        // Desabilitar atalhos de teclado
         document.addEventListener('keydown', (e) => {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
             if (e.key === 'F12' || 
                 (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
                 (e.ctrlKey && e.key === 'U')) {
@@ -900,8 +887,6 @@
         // ===========================================
         // SISTEMA DE PERSONALIZAÇÃO
         // ===========================================
-
-        let currentBackgroundType = 'image'; // 'image' ou 'video'
 
         // Carregar configurações salvas
         function loadSettings() {
@@ -923,46 +908,25 @@
                 document.documentElement.style.setProperty('--text-main', settings.colorText);
                 document.getElementById('color-text').value = settings.colorText;
             }
-            if (settings.overlayOpacity !== undefined) {
-                const opacity = settings.overlayOpacity;
-                document.documentElement.style.setProperty('--overlay-opacity', opacity);
-                document.getElementById('overlay-slider').value = opacity * 100;
-                document.getElementById('overlay-value').textContent = Math.round(opacity * 100) + '%';
-            }
-            if (settings.backgroundType) {
-                currentBackgroundType = settings.backgroundType;
-                if (settings.backgroundType === 'video' && settings.videoId) {
-                    loadYouTubeVideo(settings.videoId);
-                } else if (settings.backgroundType === 'video' && settings.videoUrl) {
-                    loadDirectVideo(settings.videoUrl);
-                } else if (settings.wallpaper) {
-                    document.documentElement.style.setProperty('--bg-image', settings.wallpaper);
-                }
+            if (settings.wallpaperType === 'video' && settings.videoUrl) {
+                applyVideo(settings.videoUrl);
+            } else if (settings.wallpaper) {
+                document.documentElement.style.setProperty('--bg-image', settings.wallpaper);
             }
         }
 
         // Salvar configurações
         function saveSettings() {
+            const videoElement = document.getElementById('video-background');
             const settings = {
                 colorPrimary: document.getElementById('color-primary').value,
                 colorSecondary: document.getElementById('color-secondary').value,
                 colorBg: document.getElementById('color-bg').value,
                 colorText: document.getElementById('color-text').value,
-                overlayOpacity: getComputedStyle(document.documentElement).getPropertyValue('--overlay-opacity'),
-                backgroundType: currentBackgroundType
+                wallpaper: getComputedStyle(document.documentElement).getPropertyValue('--bg-image'),
+                wallpaperType: videoElement.style.display === 'block' ? 'video' : 'image',
+                videoUrl: videoElement.src || ''
             };
-
-            if (currentBackgroundType === 'image') {
-                settings.wallpaper = getComputedStyle(document.documentElement).getPropertyValue('--bg-image');
-            } else if (currentBackgroundType === 'video') {
-                const videoElement = document.getElementById('video-background');
-                if (videoElement.src.includes('youtube')) {
-                    settings.videoId = videoElement.getAttribute('data-video-id');
-                } else {
-                    settings.videoUrl = videoElement.src;
-                }
-            }
-
             localStorage.setItem('portfolioSettings', JSON.stringify(settings));
         }
 
@@ -981,44 +945,33 @@
             saveSettings();
         }
 
-        // Atualizar opacidade do overlay
-        function updateOverlay(value) {
-            const opacity = value / 100;
-            document.documentElement.style.setProperty('--overlay-opacity', opacity);
-            document.getElementById('overlay-value').textContent = value + '%';
-            saveSettings();
+        // Alternar entre tabs de wallpaper
+        function switchWallpaperTab(type) {
+            const tabs = document.querySelectorAll('.wallpaper-tab');
+            const contents = document.querySelectorAll('.wallpaper-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            if (type === 'image') {
+                tabs[0].classList.add('active');
+                document.getElementById('wallpaper-image').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('wallpaper-video').classList.add('active');
+            }
         }
 
-        // Alternar entre tabs
-        function switchTab(tabName) {
-            // Remover active de todas as tabs
-            document.querySelectorAll('.wallpaper-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Ativar tab selecionada
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tabName).classList.add('active');
-        }
-
-        // Selecionar wallpaper (imagem)
+        // Selecionar wallpaper de imagem
         function selectWallpaper(element) {
-            currentBackgroundType = 'image';
-            
-            // Desativar vídeo
+            // Remover vídeo se estiver ativo
             const videoElement = document.getElementById('video-background');
-            videoElement.classList.remove('active');
+            const videoOverlay = document.getElementById('video-overlay');
+            videoElement.style.display = 'none';
+            videoOverlay.style.display = 'none';
             videoElement.pause();
+            videoElement.src = '';
             
-            // Remover seleção de vídeos
-            document.querySelectorAll('.video-option').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // Ativar imagem
             document.querySelectorAll('.wallpaper-option').forEach(el => {
                 el.classList.remove('active');
             });
@@ -1026,6 +979,7 @@
             
             const bg = element.getAttribute('data-bg');
             document.documentElement.style.setProperty('--bg-image', bg);
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), ${bg}`;
             
             saveSettings();
         }
@@ -1034,117 +988,54 @@
         function applyCustomWallpaper() {
             const url = document.getElementById('custom-wallpaper').value.trim();
             if (url) {
-                currentBackgroundType = 'image';
-                
-                // Desativar vídeo
+                // Remover vídeo se estiver ativo
                 const videoElement = document.getElementById('video-background');
-                videoElement.classList.remove('active');
+                const videoOverlay = document.getElementById('video-overlay');
+                videoElement.style.display = 'none';
+                videoOverlay.style.display = 'none';
                 videoElement.pause();
+                videoElement.src = '';
                 
                 const bgValue = `url('${url}')`;
                 document.documentElement.style.setProperty('--bg-image', bgValue);
+                document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), ${bgValue}`;
                 
                 document.querySelectorAll('.wallpaper-option').forEach(el => {
-                    el.classList.remove('active');
-                });
-                document.querySelectorAll('.video-option').forEach(el => {
                     el.classList.remove('active');
                 });
                 
                 saveSettings();
             }
-        }
-
-        // Carregar vídeo do YouTube
-        function loadYouTubeVideo(videoId) {
-            const videoElement = document.getElementById('video-background');
-            
-            // Criar iframe do YouTube
-            const iframe = document.createElement('iframe');
-            iframe.id = 'youtube-iframe';
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`;
-            iframe.style.position = 'fixed';
-            iframe.style.top = '50%';
-            iframe.style.left = '50%';
-            iframe.style.transform = 'translate(-50%, -50%)';
-            iframe.style.width = '100vw';
-            iframe.style.height = '100vh';
-            iframe.style.border = 'none';
-            iframe.style.pointerEvents = 'none';
-            iframe.style.zIndex = '-2';
-            iframe.allow = 'autoplay; encrypted-media';
-            
-            // Remover iframe anterior se existir
-            const oldIframe = document.getElementById('youtube-iframe');
-            if (oldIframe) {
-                oldIframe.remove();
-            }
-            
-            document.body.appendChild(iframe);
-            videoElement.setAttribute('data-video-id', videoId);
-        }
-
-        // Carregar vídeo direto (MP4)
-        function loadDirectVideo(videoUrl) {
-            const videoElement = document.getElementById('video-background');
-            videoElement.src = videoUrl;
-            videoElement.classList.add('active');
-            videoElement.play();
-            
-            // Remover iframe do YouTube se existir
-            const iframe = document.getElementById('youtube-iframe');
-            if (iframe) {
-                iframe.remove();
-            }
-        }
-
-        // Selecionar vídeo
-        function selectVideo(element, videoId) {
-            currentBackgroundType = 'video';
-            
-            // Remover seleção de imagens
-            document.querySelectorAll('.wallpaper-option').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            // Ativar vídeo selecionado
-            document.querySelectorAll('.video-option').forEach(el => {
-                el.classList.remove('active');
-            });
-            element.classList.add('active');
-            
-            loadYouTubeVideo(videoId);
-            saveSettings();
         }
 
         // Aplicar vídeo customizado
         function applyCustomVideo() {
-            const input = document.getElementById('custom-video').value.trim();
-            if (input) {
-                currentBackgroundType = 'video';
-                
-                document.querySelectorAll('.wallpaper-option').forEach(el => {
-                    el.classList.remove('active');
-                });
-                document.querySelectorAll('.video-option').forEach(el => {
-                    el.classList.remove('active');
-                });
-                
-                // Verificar se é URL de MP4 ou ID do YouTube
-                if (input.includes('.mp4') || input.includes('.webm')) {
-                    loadDirectVideo(input);
-                } else {
-                    // Extrair ID do YouTube se for URL completa
-                    let videoId = input;
-                    if (input.includes('youtube.com') || input.includes('youtu.be')) {
-                        const urlParams = new URLSearchParams(new URL(input).search);
-                        videoId = urlParams.get('v') || input.split('/').pop();
-                    }
-                    loadYouTubeVideo(videoId);
-                }
-                
+            const url = document.getElementById('custom-video').value.trim();
+            if (url) {
+                applyVideo(url);
                 saveSettings();
             }
+        }
+
+        // Função auxiliar para aplicar vídeo
+        function applyVideo(url) {
+            const videoElement = document.getElementById('video-background');
+            const videoOverlay = document.getElementById('video-overlay');
+            
+            // Remover wallpaper de imagem
+            document.body.style.backgroundImage = 'none';
+            
+            // Configurar vídeo
+            videoElement.src = url;
+            videoElement.style.display = 'block';
+            videoOverlay.style.display = 'block';
+            videoElement.load();
+            videoElement.play().catch(err => {
+                console.log('Erro ao reproduzir vídeo:', err);
+                alert('Erro ao carregar o vídeo. Verifique se a URL está correta e o formato é suportado (MP4 ou WebM).');
+                videoElement.style.display = 'none';
+                videoOverlay.style.display = 'none';
+            });
         }
 
         // Resetar configurações
@@ -1162,6 +1053,7 @@
             document.getElementById('settings-modal').classList.remove('active');
         }
 
+        // Fechar modal ao clicar fora
         document.getElementById('settings-modal').addEventListener('click', (e) => {
             if (e.target.id === 'settings-modal') {
                 closeSettings();
