@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚫ Sobre Mim | Black ⚫</title>
+    <title>Black | Portfolio</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -29,13 +29,14 @@
             font-family: 'JetBrains Mono', monospace;
             height: 100vh;
             overflow: hidden;
-            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), url('https://cdn.discordapp.com/attachments/1444547303389266042/1466157467116376177/G0vq4JebcAINMK1.png?ex=697bb90c&is=697a678c&hm=f1830e89b135860c946fc29007dd45925779455d4deb86fe12d3c7a8cd1b8806&'); 
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), var(--bg-image);
             background-size: cover;
             background-position: center;
             padding: var(--gap);
             display: flex;
             flex-direction: column;
             gap: var(--gap);
+            transition: background-image 0.5s ease;
         }
 
         /* Top Bar */
@@ -76,6 +77,194 @@
             font-weight: bold;
             letter-spacing: 1px;
             color: #dfe4ea;
+        }
+
+        /* Botão de Settings */
+        .settings-btn {
+            background: var(--bar-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .settings-btn:hover {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Modal de Personalização */
+        .settings-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-content {
+            background: var(--window-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-primary);
+        }
+
+        .settings-header h2 {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover { color: var(--accent-primary); }
+
+        .settings-section {
+            margin-bottom: 25px;
+        }
+
+        .settings-section h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .color-picker-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .color-option {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .color-option label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .color-option input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .wallpaper-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .wallpaper-option {
+            aspect-ratio: 16/9;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallpaper-option:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        .wallpaper-option.active {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(236, 17, 36, 0.5);
+        }
+
+        .wallpaper-option::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--accent-primary);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .wallpaper-option.active::after {
+            display: flex;
+        }
+
+        .custom-wallpaper-input {
+            margin-top: 10px;
+        }
+
+        .custom-wallpaper-input input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        .btn-reset {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--accent-secondary);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-reset:hover {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
         }
 
         /* Main Area */
@@ -141,11 +330,9 @@
             position: absolute;
             inset: 0;
             display: grid;
-
             grid-template-columns: 300px 1fr; 
             grid-template-rows: 1.2fr 0.8fr;
             gap: var(--gap);
-            
             opacity: 0;
             pointer-events: none;
             transform: scale(0.95) translateY(20px);
@@ -191,20 +378,16 @@
         }
 
         /* Posicionamento Grid */
-        
-        /* Skills */
         .win-stats {
             grid-column: 1 / 2;
             grid-row: 1 / 3;
         }
-
 
         .win-main-profile {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
         }
 
-        /* Projetos */
         .win-projects {
             grid-column: 2 / 3;
             grid-row: 2 / 3;
@@ -249,6 +432,47 @@
         .hidden { opacity: 0 !important; pointer-events: none; transform: scale(1.1); }
         .visible { opacity: 1 !important; pointer-events: all; transform: scale(1) translateY(0); }
 
+        /* Warning Overlay */
+        .devtools-warning {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .devtools-warning.active {
+            display: flex;
+        }
+
+        .warning-icon {
+            font-size: 5rem;
+            color: var(--accent-primary);
+            animation: pulse 2s infinite;
+        }
+
+        .warning-text {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @media (max-width: 900px) {
             #dashboard-view {
                 grid-template-columns: 1fr;
@@ -260,10 +484,85 @@
             .window { min-height: auto; flex-shrink: 0; }
             .profile-flex { flex-direction: column; align-items: center; text-align: center; }
             .hero-title { font-size: 2.5rem; }
+            .wallpaper-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+
+    <!-- Warning Overlay -->
+    <div class="devtools-warning" id="devtools-warning">
+        <div class="warning-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="warning-text">
+            <strong>ATENÇÃO!</strong><br>
+            DevTools detectado.<br>
+            Por favor, feche para continuar.
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2><i class="fas fa-palette"></i> Personalização</h2>
+                <button class="close-btn" onclick="closeSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h3><i class="fas fa-paint-brush"></i> Cores do Tema</h3>
+                <div class="color-picker-group">
+                    <div class="color-option">
+                        <label>Cor Principal</label>
+                        <input type="color" id="color-primary" value="#ec1124" onchange="updateColors()">
+                    </div>
+                    <div class="color-option">
+                        <label>Cor Secundária</label>
+                        <input type="color" id="color-secondary" value="#494949" onchange="updateColors()">
+                    </div>
+                    <div class="color-option">
+                        <label>Cor do Fundo</label>
+                        <input type="color" id="color-bg" value="#0f0f13" onchange="updateColors()">
+                    </div>
+                    <div class="color-option">
+                        <label>Cor do Texto</label>
+                        <input type="color" id="color-text" value="#f1f2f6" onchange="updateColors()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3><i class="fas fa-image"></i> Papel de Parede</h3>
+                <div class="wallpaper-grid">
+                    <div class="wallpaper-option active" data-bg="url('https://cdn.discordapp.com/attachments/1444547303389266042/1466157467116376177/G0vq4JebcAINMK1.png?ex=697bb90c&is=697a678c&hm=f1830e89b135860c946fc29007dd45925779455d4deb86fe12d3c7a8cd1b8806&')" style="background-image: url('https://cdn.discordapp.com/attachments/1444547303389266042/1466157467116376177/G0vq4JebcAINMK1.png?ex=697bb90c&is=697a678c&hm=f1830e89b135860c946fc29007dd45925779455d4deb86fe12d3c7a8cd1b8806&')" onclick="selectWallpaper(this)"></div>
+                    
+                    <div class="wallpaper-option" data-bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" onclick="selectWallpaper(this)"></div>
+                    
+                    <div class="wallpaper-option" data-bg="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" onclick="selectWallpaper(this)"></div>
+                    
+                    <div class="wallpaper-option" data-bg="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" onclick="selectWallpaper(this)"></div>
+                    
+                    <div class="wallpaper-option" data-bg="linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" onclick="selectWallpaper(this)"></div>
+                    
+                    <div class="wallpaper-option" data-bg="linear-gradient(135deg, #fa709a 0%, #fee140 100%)" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)" onclick="selectWallpaper(this)"></div>
+                </div>
+                
+                <div class="custom-wallpaper-input">
+                    <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 5px;">
+                        <i class="fas fa-link"></i> URL Personalizada
+                    </label>
+                    <input type="text" id="custom-wallpaper" placeholder="Cole a URL da imagem aqui..." onchange="applyCustomWallpaper()">
+                </div>
+            </div>
+
+            <button class="btn-reset" onclick="resetSettings()">
+                <i class="fas fa-undo"></i> Restaurar Padrões
+            </button>
+        </div>
+    </div>
 
     <header class="top-bar">
         <div class="bar-module workspaces">
@@ -271,16 +570,22 @@
             <i class="fas fa-circle ws-icon" id="ws-info" onclick="goInfo()"></i>
         </div>
 
-        <div class="bar-module clock">
-            <i class="far fa-calendar-alt" style="margin-right: 8px; color: var(--accent-primary);"></i>
-            <span id="clock-display">SEG 22:45</span>
+        <div style="display: flex; gap: 10px;">
+            <button class="settings-btn" onclick="openSettings()">
+                <i class="fas fa-cog"></i>
+            </button>
+            
+            <div class="bar-module clock">
+                <i class="far fa-calendar-alt" style="margin-right: 8px; color: var(--accent-primary);"></i>
+                <span id="clock-display">SEG 22:45</span>
+            </div>
         </div>
     </header>
 
     <main class="desktop-area">
         
         <section id="home-view">
-            <h1 class="hero-title">Olá, eu sou <spam><strong>Black</strong></spam></h1>
+            <h1 class="hero-title">Olá, eu sou <span><strong>Black</strong></span></h1>
             <p class="hero-subtitle"> > Discord Manager & Programador Html, JavaScript e Python ></p>
             
             <button class="btn-info" onclick="goInfo()">
@@ -363,6 +668,172 @@
     </main>
 
     <script>
+        // ===========================================
+        // PROTEÇÃO CONTRA DEVTOOLS
+        // ===========================================
+        
+        // Detectar DevTools por tamanho da janela
+        const devtoolsWarning = document.getElementById('devtools-warning');
+        let devtoolsOpen = false;
+
+        function detectDevTools() {
+            const threshold = 160;
+            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+            
+            if (widthThreshold || heightThreshold) {
+                if (!devtoolsOpen) {
+                    devtoolsOpen = true;
+                    devtoolsWarning.classList.add('active');
+                }
+            } else {
+                if (devtoolsOpen) {
+                    devtoolsOpen = false;
+                    devtoolsWarning.classList.remove('active');
+                }
+            }
+        }
+
+        // Detectar debugger
+        setInterval(() => {
+            detectDevTools();
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+            if (end - start > 100) {
+                devtoolsWarning.classList.add('active');
+            }
+        }, 1000);
+
+        // Desabilitar clique direito
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // Desabilitar atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // ===========================================
+        // SISTEMA DE PERSONALIZAÇÃO
+        // ===========================================
+
+        // Carregar configurações salvas
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('portfolioSettings')) || {};
+            
+            if (settings.colorPrimary) {
+                document.documentElement.style.setProperty('--accent-primary', settings.colorPrimary);
+                document.getElementById('color-primary').value = settings.colorPrimary;
+            }
+            if (settings.colorSecondary) {
+                document.documentElement.style.setProperty('--accent-secondary', settings.colorSecondary);
+                document.getElementById('color-secondary').value = settings.colorSecondary;
+            }
+            if (settings.colorBg) {
+                document.documentElement.style.setProperty('--bg-dark', settings.colorBg);
+                document.getElementById('color-bg').value = settings.colorBg;
+            }
+            if (settings.colorText) {
+                document.documentElement.style.setProperty('--text-main', settings.colorText);
+                document.getElementById('color-text').value = settings.colorText;
+            }
+            if (settings.wallpaper) {
+                document.documentElement.style.setProperty('--bg-image', settings.wallpaper);
+            }
+        }
+
+        // Salvar configurações
+        function saveSettings() {
+            const settings = {
+                colorPrimary: document.getElementById('color-primary').value,
+                colorSecondary: document.getElementById('color-secondary').value,
+                colorBg: document.getElementById('color-bg').value,
+                colorText: document.getElementById('color-text').value,
+                wallpaper: getComputedStyle(document.documentElement).getPropertyValue('--bg-image')
+            };
+            localStorage.setItem('portfolioSettings', JSON.stringify(settings));
+        }
+
+        // Atualizar cores
+        function updateColors() {
+            const primary = document.getElementById('color-primary').value;
+            const secondary = document.getElementById('color-secondary').value;
+            const bg = document.getElementById('color-bg').value;
+            const text = document.getElementById('color-text').value;
+
+            document.documentElement.style.setProperty('--accent-primary', primary);
+            document.documentElement.style.setProperty('--accent-secondary', secondary);
+            document.documentElement.style.setProperty('--bg-dark', bg);
+            document.documentElement.style.setProperty('--text-main', text);
+
+            saveSettings();
+        }
+
+        // Selecionar wallpaper
+        function selectWallpaper(element) {
+            document.querySelectorAll('.wallpaper-option').forEach(el => {
+                el.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            const bg = element.getAttribute('data-bg');
+            document.documentElement.style.setProperty('--bg-image', bg);
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), ${bg}`;
+            
+            saveSettings();
+        }
+
+        // Aplicar wallpaper customizado
+        function applyCustomWallpaper() {
+            const url = document.getElementById('custom-wallpaper').value.trim();
+            if (url) {
+                const bgValue = `url('${url}')`;
+                document.documentElement.style.setProperty('--bg-image', bgValue);
+                document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0), rgba(0,0,0,0.6)), ${bgValue}`;
+                
+                document.querySelectorAll('.wallpaper-option').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                saveSettings();
+            }
+        }
+
+        // Resetar configurações
+        function resetSettings() {
+            localStorage.removeItem('portfolioSettings');
+            location.reload();
+        }
+
+        // Abrir/Fechar modal
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.remove('active');
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('settings-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'settings-modal') {
+                closeSettings();
+            }
+        });
+
+        // ===========================================
+        // NAVEGAÇÃO
+        // ===========================================
+
         function goInfo() {
             document.getElementById('home-view').classList.add('hidden');
             const dash = document.getElementById('dashboard-view');
@@ -379,28 +850,15 @@
             document.getElementById('ws-home').classList.add('active');
         }
 
+        // Relógio
         setInterval(() => {
             const now = new Date();
             const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('clock-display').innerText = time;
         }, 1000);
-  // Bloqueia o botão direito do mouse
-  document.addEventListener('contextmenu', event => event.preventDefault());
 
-  // Bloqueia atalhos de teclado (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
-  document.onkeydown = function(e) {
-    if (e.keyCode == 123) { // F12
-      return false;
-    }
-    if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) {
-      return false;
-    }
-    if (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0))) { // Ctrl+U (Ver Fonte)
-      return false;
-    }
-  }
+        // Carregar configurações ao iniciar
+        loadSettings();
     </script>
 </body>
-
 </html>
-
